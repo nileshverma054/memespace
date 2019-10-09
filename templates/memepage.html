@@ -1,0 +1,35 @@
+{% include 'assets/bootstrap.html' %}
+
+    <div class="container-fluid my-5">
+    <form action="/response/{{ques._id}}" method="post">
+        <div class="row">
+            <div class="col-sm-8">
+                <img src="{{url_for('static', filename=ques.img) }}" class="mx-auto d-block img-fluid img-thumbnail">
+            </div>
+
+            <div class="col-sm-4 my-5">
+                <h5 class="mb-4">{{ques.que}}</h5>
+                {% if ques.type == 'mcq' %}
+                    {% for x in ques.options %}
+
+                        <div class="form-check py-2">
+                          <label class="form-check-label">
+                            <input type="radio" class="form-check-input" value="{{loop.index}}" name="ans" {% if loop.index == ans %} checked {%endif%} >{{x}}
+                          </label>
+                        </div>
+
+                    {% endfor %}
+                {% else %}
+                     <div class="form-group my-3">
+                        <textarea class="form-control" name="ans" rows="2" placeholder="Write answer here.." autofocus>{% if ans %}{{ ans }}{%endif%}</textarea>
+                     </div>
+                {% endif %}
+                <a href="#" class="btn btn-primary" onclick="window.history.back()">Prev</a>
+                <button type="Submit" class="btn btn-success my-4">Submit Answer</button>
+                <a href="{{next._id}}" class="btn btn-primary my-4">Next</a>
+                {% include 'assets/flash.html' %}
+            </div>
+
+        </div>
+    </form>
+    </div>

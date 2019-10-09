@@ -1,0 +1,142 @@
+
+{% include 'assets/bootstrap.html' %}
+
+    <style>
+        .meme_img{
+            height:150px;
+        }
+    </style>
+
+
+<div class="container my-5">
+    {% include 'assets/flash.html' %}
+    <div class="clearfix">
+        <h3 class="float-left">Total Questions : {{count}}</h3>
+        <button class="btn btn-primary float-right" id="add_que">Add New</button>
+    </div>
+    <hr>
+
+    <!-- add question -->
+
+    <form action="/add_que" method="post" enctype = "multipart/form-data">
+    <div id="que_section">
+        <div class="row my-2">
+
+            <div class="col-sm">
+
+                <input type="file" name="image">
+
+                <div class="form-group my-3">
+                  <textarea class="form-control" name="que" rows="2" placeholder="Write question here.."></textarea>
+                </div>
+            </div>
+
+            <div class="col-sm">
+
+                    <label><input id="rdb1" type="radio" name="toggler" value="1" checked/>MCQ</label>
+                    <label><input id="rdb2" type="radio" name="toggler" value="2" />Caption</label>
+
+                    <div id="blk-1" class="toHide my-2">
+                        <span>Options</span>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" value=1 name="optradio">
+                                <input type="text" name="op1" class="form-control form-control-sm my-1">
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" value=2 name="optradio">
+                                <input type="text" name="op2" class="form-control form-control-sm my-1">
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" value=3 name="optradio">
+                                <input type="text" name="op3" class="form-control form-control-sm my-1">
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" value=4 name="optradio">
+                                <input type="text" name="op4" class="form-control form-control-sm my-1">
+                        </div>
+                    </div>
+                    <div id="blk-2" class="toHide" style="display:none">
+                            <div class="form-group my-3">
+                                <textarea class="form-control" name="ans" rows="2" placeholder="Write answer here.."></textarea>
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <!-- //add question -->
+
+{% for q in ques %}
+<hr>
+<form action="/update_que" method="post">
+    <div class="row">
+        <div class="col-sm">
+             <img src="{{ url_for('static', filename = q.img ) }}" class="img-thumbnail meme_img" alt="Profile Image">
+             <div class="form-group my-3">
+              <textarea class="form-control" rows="2" placeholder="Write question here.." id="comment">{{q.que}}</textarea>
+            </div>
+        </div>
+
+        <div class="col-sm">
+        {% if q.type == 'mcq' %}
+            <input type="hidden" name="q_type" value="1">
+            <span>Options</span>
+            {% for x in q.options %}
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" value="{{loop.index}}" name="ans" {% if loop.index == q.ans|int %} checked {%endif%} >
+                        <input type="text" name="op" value="{{x}}" class="form-control form-control-sm my-1">
+                </div>
+            {% endfor %}
+            <!--
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" value=2 name="optradio">
+                        <input type="text" name="op2" value="{{q.options.1}}" class="form-control form-control-sm my-1">
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" value=3 name="optradio">
+                        <input type="text" name="op3" value="{{q.options.2}}" class="form-control form-control-sm my-1">
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" value=4 name="optradio">
+                        <input type="text" name="op4" value="{{q.options.3}}" class="form-control form-control-sm my-1">
+                </div>
+                -->
+            {% else %}
+                <input type="hidden" name="q_type" value="0">
+                <div class="form-group my-3">
+                    <textarea class="form-control" name="ans" rows="2" placeholder="Write answer here..">{{q.ans}}</textarea>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <!--
+        <a href="/update_que/{{q._id}}" class="btn btn-primary">Update</a>
+        -->
+        <a href="/delete_que/{{q._id}}" class="btn btn-danger">Delete</a>
+</form>
+
+{% endfor %}
+
+</div>
+
+<!-- toggle add question -->
+<script>
+$(document).ready(function(){
+  $("#add_que").click(function(){
+    $("#que_section").toggle(1000);
+  });
+});
+</script>
+
+<script>
+
+$(function() {
+    $("[name=toggler]").click(function(){
+            $('.toHide').hide();
+            $("#blk-"+$("[name=toggler]:checked").val()).show();
+    });
+ });
+</script>

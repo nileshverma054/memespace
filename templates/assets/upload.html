@@ -1,0 +1,24 @@
+
+{% include 'assets/bootstrap.html' %}
+
+
+    <div class="tab-pane container active" id="home">
+    <form action="/upload" method="post" enctype = "multipart/form-data">
+        <div class="row my-5">
+          <div class="col-sm-4">
+            <div class="form-group">
+                {% if data.p_img %}
+
+		            <img src="{{ url_for('static', filename = data.p_img ) }}" name="photo_id" value="{{data.p_img}}" style=" width:500px; object-fit : cover;" class="avatar img-thumbnail mx-auto d-block" alt="Image" required>
+                {% else %}
+                    <input type="file" name="image">
+
+
+            </div>
+          </div>
+                <button type="submit" class="btn btn-success">Upload</button>
+
+        </div>
+        {% endif %}
+    </form>
+      </div>

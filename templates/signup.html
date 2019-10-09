@@ -1,0 +1,65 @@
+{% include 'assets/bootstrap.html' %}
+
+<style>
+@media(max-width: 600px){
+    .loginbox{
+      width: 100% !important;
+    }
+  }
+  @media(max-width: 1024px){
+    .loginbox{
+      min-width: 60% !important;
+    }
+  }
+</style>
+
+<div class="container loginbox w-25 clearfix mt-5 shadow-lg rounded p-5">
+   <a href="/">
+         <img src="{{ url_for('static', filename='images/logo.png') }}" class="rounded-circle mx-auto d-block my-1" height="50" alt="logo">
+    </a>
+<h2 class="text-center mb-5">MemeSpace</h2>
+
+
+  <form action="/signup_user" method="post">
+
+    <div class="form-group">
+        <label for="email"> Email<i> (this will be your username)</i></label>
+      <input type="text" class="form-control" id="email" placeholder="Enter email" name="email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email"> Name</label>
+      <input type="text" class="form-control" placeholder="Enter name" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email"> Contact number</label>
+      <input type="text" class="form-control" placeholder="Enter contact number" name="contact" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email"> College Name</label>
+      <input type="text" class="form-control" placeholder="Enter college name" name="college" required>
+    </div>
+
+      <div class="form-group">
+      <label for="pwd"> Password</label>
+      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 mt-5">Submit</button>
+  </form>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+         {% if messages %}
+
+               {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mt-3 text-center">
+                    {{ message }}!
+                </div>
+               {% endfor %}
+
+         {% endif %}
+      {% endwith %}
+
+</div>
